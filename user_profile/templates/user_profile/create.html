@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load  crispy_forms_tags %}
+
+{% block title %}Criar perfil | {% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+    {% if not request.user.is_authenticated %}
+    <div class="col-lg mt-3">
+        <h4>Login</h4>
+        <p>Se já se registou basta entrar com dados de acesso.</p>
+
+        <form method="POST" action="{% url 'user_profile:login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="InputUser1">Utilizador</label>
+              <input type="text" name="username" class="form-control" id="InputUser1" aria-describedby="emailHelp" placeholder="Inserir nome do usuário">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Insira uma password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Registar</button>
+          </form>
+          
+    </div>
+    {% endif %}
+
+
+    <div class="col-lg mt-3">
+        {% block title_register%}
+        <h4>Registo</h4>
+        <p>Se ainda não se registou, efectue o registo abaixo.</p>
+
+        {% endblock %}
+        
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{ userform|crispy}}
+            {{ profileform|crispy}}
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class='btn btn-primary btn-block btn-lg'>
+                        Registar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

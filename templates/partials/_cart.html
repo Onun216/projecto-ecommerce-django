@@ -1,0 +1,43 @@
+{% load static %}
+{% load omfilters %}
+
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th class="d-none d-lg-block">Imagem</th>
+            <th>Produto</th>
+            <th>V.</th>
+            <th>QTD.</th>
+            <th>Total</th>
+        </tr>
+        {% for product in cart.values %}
+        <tr>
+            <td class="d-none d-lg-block">
+                <img class="cart-img" src="{% get_media_prefix %}{{ product.image }}">
+            </td>
+            <td>
+                <a href="{% url 'product:detail' product.slug  %}">
+                    {{ product.product_name}}
+                </a>
+                <a class="ml-3" href="{% url 'product:removefromcart' %}?vid={{product.variation_id}}">
+                    <i class="fas fa-times-circle text-danger" aria-hidden="true"></i>
+                </a>
+            </td>
+            <td>{{ product.variation_name}}</td>
+            <td>
+                {{product.quantity}} x
+                {% if product.unit_price_promotional %}
+                    {{ product.unit_price_promotional}}
+                {% else %}
+                    {{ product.unit_price }}
+                {% endif %}
+            </td>
+            {% if product.unit_price_promotional %}
+            <td>{{ product.unit_price_promotional|format_price }}</td>
+            {% else %}
+            <td>{{ product.unit_price|format_price }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
